@@ -239,12 +239,13 @@ void backUp(){
 }
 
 void turn180degrees(){
-  while(!checkSensor(centerSensor)){
+//   while(!checkSensor(centerSensor)){
     digitalWrite(rDir, HIGH); 
     digitalWrite(lDir, HIGH); 
     analogWrite(rSpe, rightWheelSpeed);
     analogWrite(lSpe, -leftWheelSpeed);
-  } 
+    delay(2*turnDelay);
+//   } 
 }
 
 //GRIP FUNCTIONS FOR ROBOT
