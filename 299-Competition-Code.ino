@@ -107,7 +107,7 @@ void checkClaw(){                               //checking claw state ([0] open 
 }
 
 boolean checkSensor(int sensor){
-  if (sensor > THRESHOLD){
+  if (analogRead(sensor) > THRESHOLD){
     return true;
   }
 }
@@ -116,7 +116,7 @@ boolean checkSensor(int sensor){
 void checkIntersection(){                       //check if robot is passing intersection
   Serial.println(analogRead(leftSensor));
 //  if ((checkSensor(analogRead(leftSensor)) == true )&&( checkSensor(analogRead(rightSensor)) == true)) {    //when robot passes intersection
-   if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(rightSensor > THRESHOLD))) {
+   if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(rightSensor) > THRESHOLD)) {
     count++;
     delay(1000);
   }
