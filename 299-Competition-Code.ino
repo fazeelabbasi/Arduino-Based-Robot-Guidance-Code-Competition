@@ -43,7 +43,7 @@ int intersections[25] = {};
 int turns[25] = {}; 
 
 //Other variables
-int count = 1; //used to count intersections traversed
+int count = 0; //used to count intersections traversed
 int action = 0; //used to traverse above arrays
 boolean clawState = false; //used to determine if claw should be closed or open
 int ball = 0; //denotes turn scenarios i.e. ball = 0 means going for first object, ball = 1 means going for second object, etc.
@@ -128,26 +128,26 @@ void checkTurn(){                               //check if robot needs to turn
   if (intersections[action] == count){         
     halfTurn(turns[action]);
     action++;
-    count = 1;
+    count = 0;
   }
 }
 
 void checkBumper(){                            //check if robot impacts wall
   if (bumper == 1) {                         
-     action++;
-     if (clawState = false){
+     if (clawState == false){
         backUp();
         grab(); //close claw function
         clawState = !clawState;
      }    
-     else if (clawState = true){
-        backUp();
+     else if (clawState == true){
         openGripper();           //open claw function
         clawState = !clawState;
         ball++;
+        backUp();
      }              
-     count = 1;  
+     count = 0;  
      turn180degrees();               //reverse and turn function
+     action++;
   }  
 }     
 
@@ -207,19 +207,23 @@ void stopDriving(){
 }
 
 void halfTurn(int dir){
-  if(dir == 0){ 
-    digitalWrite(rDir, HIGH); 
-    digitalWrite(lDir, HIGH); 
-    analogWrite(rSpe, rightWheelSpeed);
-    analogWrite(lSpe, -leftWheelSpeed);
-    delay(turnDelay);
+  if(dir == 0){               //left turn
+    while(!leftSensor){
+      digitalWrite(rDir, HIGH); 
+      digitalWrite(lDir, HIGH); 
+      analogWrite(rSpe, rightWheelSpeed);
+      analogWrite(lSpe, -leftWheelSpeed);
+//       delay(turnDelay);
+    }
   }
-  else if (dir == 1){
-    digitalWrite(rDir, HIGH); 
-    digitalWrite(lDir, HIGH); 
-    analogWrite(rSpe, -rightWheelSpeed);
-    analogWrite(lSpe, leftWheelSpeed);
-    delay(turnDelay);
+  else if (dir == 1){         //right turn
+    while(!rightSensor){
+      digitalWrite(rDir, HIGH); 
+      digitalWrite(lDir, HIGH); 
+      analogWrite(rSpe, -rightWheelSpeed);
+      analogWrite(lSpe, leftWheelSpeed);
+//       delay(turnDelay);
+    }
   } 
 }
 
