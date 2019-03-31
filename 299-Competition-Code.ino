@@ -208,22 +208,22 @@ void stopDriving(){
 
 void halfTurn(int dir){
   if(dir == 0){               //left turn
-    while(!leftSensor){
+//     while(!checkSensor(leftSensor)){
       digitalWrite(rDir, HIGH); 
       digitalWrite(lDir, HIGH); 
       analogWrite(rSpe, rightWheelSpeed);
       analogWrite(lSpe, -leftWheelSpeed);
-//       delay(turnDelay);
-    }
+      delay(turnDelay);
+//     }
   }
   else if (dir == 1){         //right turn
-    while(!rightSensor){
+//     while(!checkSensor(rightSensor)){
       digitalWrite(rDir, HIGH); 
       digitalWrite(lDir, HIGH); 
       analogWrite(rSpe, -rightWheelSpeed);
       analogWrite(lSpe, leftWheelSpeed);
-//       delay(turnDelay);
-    }
+      delay(turnDelay);
+//     }
   } 
 }
 
@@ -231,8 +231,8 @@ void backUp(){
   int counter = 0;
   counter++;
   while(counter < 500){
-  digitalWrite(rDir, LOW); 
-  digitalWrite(lDir, LOW); 
+  digitalWrite(rDir, HIGH); 
+  digitalWrite(lDir, HIGH); 
   analogWrite(rSpe, -rightWheelSpeed);
   analogWrite(lSpe, -leftWheelSpeed);
   }
@@ -241,7 +241,7 @@ void backUp(){
 void turn180degrees(){
   while(!checkSensor(centerSensor)){
     digitalWrite(rDir, HIGH); 
-    digitalWrite(lDir, LOW); 
+    digitalWrite(lDir, HIGH); 
     analogWrite(rSpe, rightWheelSpeed);
     analogWrite(lSpe, -leftWheelSpeed);
   } 
