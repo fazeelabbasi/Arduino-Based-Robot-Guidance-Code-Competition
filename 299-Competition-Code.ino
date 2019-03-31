@@ -8,8 +8,8 @@ int rSpe = 6;
 int lSpe = 5;
 
 //Robot wheel speeds
-int leftWheelSpeed = 175; //set left wheel speed
-int rightWheelSpeed = 175; //set right wheel speed
+int leftWheelSpeed = 150; //set left wheel speed
+int rightWheelSpeed = 250; //set right wheel speed
 
 int IR = 2; //used for acquiring initial position
 int bumper = 3; //both bumpers are wired to the same circuit
@@ -185,11 +185,28 @@ void checkPosition(int val){           //When IR signal is received, checks for 
 }
 
 //DRIVE FUNCTIONS FOR ROBOT
+void setSpeed(int leftSPEED, int rightSPEED) {
+  if (leftSPEED == 0)digitalWrite(lDir, LOW);
+  else digitalWrite(lDir, HIGH);
+  if (rightSPEED == 0)digitalWrite(rDir, LOW);
+  else digitalWrite(rDir, HIGH);
+
+//  leftSPEED /= 2;
+//  leftSPEED += 128;
+
+  rightSPEED /= 2;
+  rightSPEED += 128;
+  
+  analogWrite(rSpe, rightSPEED);
+  analogWrite(lSpe, leftSPEED);
+  Serial.println("Left Speed:");
+  Serial.println(leftSPEED);
+  Serial.println("Right Speed:");
+  Serial.println(rightSPEED);
+}
+
 void driveForward() {
-  digitalWrite(rDir, HIGH);
-  digitalWrite(lDir, HIGH);
-  analogWrite(rSpe, rightWheelSpeed);
-  analogWrite(lSpe, leftWheelSpeed);
+  setSpeed(leftWheelSpeed, rightWheelSpeed);
   if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(centerSensor) < THRESHOLD) && (analogRead(leftSensor) < THRESHOLD))
   {
      Serial.println("Corecting LEFT BIAS");
