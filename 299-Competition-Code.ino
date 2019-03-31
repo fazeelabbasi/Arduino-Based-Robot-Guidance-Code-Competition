@@ -43,7 +43,7 @@ int intersections[25] = {};
 int turns[25] = {}; 
 
 //Other variables
-int count = 1; //used to count intersections traversed
+int count = 0; //used to count intersections traversed
 int action = 0; //used to traverse above arrays
 boolean clawState = false; //used to determine if claw should be closed or open
 int ball = 0; //denotes turn scenarios i.e. ball = 0 means going for first object, ball = 1 means going for second object, etc.
@@ -58,7 +58,7 @@ void setup() {
   }
 
 //  while(!getPosition){ //robot will not run loop code until initial position has been acquired
-    int signal = 48;
+    int signal = 48; //temporaily assign IR variable [ONLY FOR TESTING PURPOSES]
 //    int signal = digitalRead(IR);
 //    if (signal == LOW){
       checkPosition(signal);
@@ -108,7 +108,7 @@ void checkClaw(){                               //checking claw state ([0] open 
 }
 
 boolean checkSensor(int sensor){
-  if (sensor > THRESHOLD){
+  if (analogRead(sensor) > THRESHOLD){
     return true;
   }
 }
@@ -121,7 +121,7 @@ void checkIntersection(){                       //check if robot is passing inte
     Serial.println(analogRead(rightSensor));
      Serial.println("--------------------SENSOR END LCR---------------------");
 //  if ((checkSensor(analogRead(leftSensor)) == true )&&( checkSensor(analogRead(rightSensor)) == true)) {    //when robot passes intersection
-   if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(rightSensor > THRESHOLD))) {
+   if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(rightSensor) > THRESHOLD)) {
     count++;
     delay(1000);
   }
@@ -133,26 +133,26 @@ void checkTurn(){                               //check if robot needs to turn
   if (intersections[action] == count){         
     halfTurn(turns[action]);
     action++;
-    count = 1;
+    count = 0;
   }
 }
 
 void checkBumper(){                            //check if robot impacts wall
   if (bumper == 1) {                         
-     action++;
-     if (clawState = false){
+     if (clawState == false){
         backUp();
         grab(); //close claw function
         clawState = !clawState;
      }    
-     else if (clawState = true){
-        backUp();
+     else if (clawState == true){
         openGripper();           //open claw function
         clawState = !clawState;
         ball++;
+        backUp();
      }              
-     count = 1;  
+     count = 0;  
      turn180degrees();               //reverse and turn function
+     action++;
   }  
 }     
 
@@ -214,19 +214,23 @@ void stopDriving(){
 }
 
 void halfTurn(int dir){
-  if(dir == 0){ 
-    digitalWrite(rDir, HIGH); 
-    digitalWrite(lDir, HIGH); 
-    analogWrite(rSpe, rightWheelSpeed);
-    analogWrite(lSpe, -leftWheelSpeed);
-    delay(turnDelay);
+  if(dir == 0){               //left turn
+//     while(!checkSensor(leftSensor)){
+      digitalWrite(rDir, HIGH); 
+      digitalWrite(lDir, HIGH); 
+      analogWrite(rSpe, rightWheelSpeed);
+      analogWrite(lSpe, -leftWheelSpeed);
+      delay(turnDelay);
+//     }
   }
-  else if (dir == 1){
-    digitalWrite(rDir, HIGH); 
-    digitalWrite(lDir, HIGH); 
-    analogWrite(rSpe, -rightWheelSpeed);
-    analogWrite(lSpe, leftWheelSpeed);
-    delay(turnDelay);
+  else if (dir == 1){         //right turn
+//     while(!checkSensor(rightSensor)){
+      digitalWrite(rDir, HIGH); 
+      digitalWrite(lDir, HIGH); 
+      analogWrite(rSpe, -rightWheelSpeed);
+      analogWrite(lSpe, leftWheelSpeed);
+      delay(turnDelay);
+//     }
   } 
 }
 
@@ -234,20 +238,21 @@ void backUp(){
   int counter = 0;
   counter++;
   while(counter < 500){
-  digitalWrite(rDir, LOW); 
-  digitalWrite(lDir, LOW); 
+  digitalWrite(rDir, HIGH); 
+  digitalWrite(lDir, HIGH); 
   analogWrite(rSpe, -rightWheelSpeed);
   analogWrite(lSpe, -leftWheelSpeed);
   }
 }
 
 void turn180degrees(){
-  while(!checkSensor(centerSensor)){
+//   while(!checkSensor(centerSensor)){
     digitalWrite(rDir, HIGH); 
-    digitalWrite(lDir, LOW); 
+    digitalWrite(lDir, HIGH); 
     analogWrite(rSpe, rightWheelSpeed);
     analogWrite(lSpe, -leftWheelSpeed);
-  } 
+    delay(2*turnDelay);
+//   } 
 }
 
 //GRIP FUNCTIONS FOR ROBOT
