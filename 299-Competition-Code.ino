@@ -1,5 +1,5 @@
 #include <Servo.h>
-//#include <QSerial.h>
+#include <QSerial.h>
 
 //Robot pin declarations
 int rDir = 7;
