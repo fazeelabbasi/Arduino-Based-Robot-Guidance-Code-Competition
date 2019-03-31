@@ -7,6 +7,8 @@ int lDir = 4;
 int rSpe = 6;
 int lSpe = 5;
 
+//testsetestse
+
 //Robot wheel speeds
 int leftWheelSpeed = 150; //set left wheel speed
 int rightWheelSpeed = 250; //set right wheel speed
