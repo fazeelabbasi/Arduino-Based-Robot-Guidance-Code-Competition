@@ -58,7 +58,7 @@ void setup() {
   }
 
 //  while(!getPosition){ //robot will not run loop code until initial position has been acquired
-    int signal = 48;
+    int signal = 48; //temporaily assign IR variable [ONLY FOR TESTING PURPOSES]
 //    int signal = digitalRead(IR);
 //    if (signal == LOW){
       checkPosition(signal);
