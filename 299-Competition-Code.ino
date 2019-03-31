@@ -16,7 +16,7 @@ int bumper = 3; //both bumpers are wired to the same circuit
 int leftSensor = A3;
 int centerSensor = A4;
 int rightSensor = A5;
-int const THRESHOLD = 640; //threshold for light sensors
+int const THRESHOLD = 700; //threshold for light sensors
 int const turnDelay = 1000; //time for half turn
 int const speedChangeDelay = 200;
 
@@ -84,6 +84,7 @@ void setup() {
 //  pinMode(centerSensor, INPUT);
 //  pinMode(rightSensor, INPUT);
   
+  
 }
 
 void loop() {
@@ -114,7 +115,11 @@ boolean checkSensor(int sensor){
 
 
 void checkIntersection(){                       //check if robot is passing intersection
+  Serial.println("--------------------SENSOR START LCR------------------------");
   Serial.println(analogRead(leftSensor));
+   Serial.println(analogRead(centerSensor));
+    Serial.println(analogRead(rightSensor));
+     Serial.println("--------------------SENSOR END LCR---------------------");
 //  if ((checkSensor(analogRead(leftSensor)) == true )&&( checkSensor(analogRead(rightSensor)) == true)) {    //when robot passes intersection
    if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(rightSensor > THRESHOLD))) {
     count++;
@@ -187,14 +192,16 @@ void driveForward() {
   analogWrite(lSpe, leftWheelSpeed);
   if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(centerSensor) < THRESHOLD) && (analogRead(leftSensor) < THRESHOLD))
   {
-    analogWrite(rSpe, rightWheelSpeed - 30);
-    analogWrite(lSpe, leftWheelSpeed + 30);
+     Serial.println("Corecting LEFT BIAS");
+    analogWrite(rSpe, rightWheelSpeed - 15);
+    analogWrite(lSpe, leftWheelSpeed + 15);
     delay(speedChangeDelay);
   }
   else if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(centerSensor) < THRESHOLD) && (analogRead(rightSensor) < THRESHOLD))
   {
-    analogWrite(rSpe, rightWheelSpeed + 30);
-    analogWrite(lSpe, leftWheelSpeed - 30);
+    Serial.println("Corecting RIGHT BIAS");
+    analogWrite(rSpe, rightWheelSpeed + 15);
+    analogWrite(lSpe, leftWheelSpeed - 15);
     delay(speedChangeDelay);
   }
 }
