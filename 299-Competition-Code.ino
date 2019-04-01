@@ -6,51 +6,47 @@ int rDir = 7;
 int lDir = 4;
 int rSpe = 6;
 int lSpe = 5;
-
-//testsetestse
-
-//Robot wheel speeds
-int leftWheelSpeed = 150; //set left wheel speed
-int rightWheelSpeed = 250; //set right wheel speed
-
-int IR = 2; //used for acquiring initial position
-int bumper = 3; //both bumpers are wired to the same circuit
+int leftWheelSpeed = 150;                             //set left wheel speed
+int rightWheelSpeed = 250;                            //set right wheel speed
+int IR = 2;                                          //used for acquiring initial position
+int bumper = 3;                                      //both bumpers are wired to the same circuit
 int leftSensor = A3;
 int centerSensor = A4;
 int rightSensor = A5;
-int const THRESHOLD = 700; //threshold for light sensors
-int const turnDelay = 1000; //time for half turn
+int const THRESHOLD = 700;                           //threshold for light sensors
+int const turnDelay = 1000;                          //time for half turn
 int const speedChangeDelay = 200;
 
 Servo grip, tilt, pan;
 int panPin = 8;
 int gripPin = 10;
 int tiltPin = 9;
-int grabHeight = 70; //height for gripping
-int releaseHeight = 90; //height for releasing object
+int grabHeight = 90; //height for gripping
+int releaseHeight = 120; //height for releasing object
 int straightPan = 90; //angle of claw (facing forward)
 
 //open 0 - 180 close
 int holdDice = 120; //claw gripping state
 int releaseDice = 40; //claw open state
 
+
 //Configuring robot turning conditions
-int P1[] = {6, 9, 4, 9, 6, 3, 9, 1, 3, 9, 6, 9, 2, 9, 5, 9, 2, 9, 2, 9, 2, 9}; //Position 1 [22]
-int t1[] = {1, 2, 0, 2, 1, 0, 2, 1, 0, 2, 0, 2, 1, 2, 0, 2, 1, 2, 0, 2, 1, 2}; //0 is left turn, 1 is right turn, everything else is placeholder
-int P2[] = {4, 9, 3, 9, 5, 9, 3, 9, 6, 1, 9, 1, 1, 9, 6, 2, 9, 1, 2, 9, 3, 9, 3, 9}; //Position 2 [24]
-int t2[] = {1, 2, 0, 2, 1, 2, 0, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 1, 0, 2, 0, 2, 1, 2}; //0 is left turn, 1 is right turn, everything else is placeholder
-int P3[] = {2, 9, 2, 9, 3, 9, 2, 9, 9, 9, 6, 1, 9, 1, 1, 9, 4, 9, 4, 9}; //Position 3 [20]
-int t3[] = {1, 2, 0, 2, 1, 2, 0, 2, 2, 2, 0, 1, 2, 0, 1, 2, 0, 2, 1, 2}; //0 is left turn, 1 is right turn, everything else is placeholder
-int intersections[25] = {};
-int turns[25] = {}; 
+//int P1[] = {6, 9, 4, 9, 6, 3, 9, 1, 3, 9, 6, 9, 2, 9, 5, 9, 2, 9, 2, 9, 2, 9}; //Position 1 [22]
+//int t1[] = {1, 2, 0, 2, 1, 0, 2, 1, 0, 2, 0, 2, 1, 2, 0, 2, 1, 2, 0, 2, 1, 2}; //0 is left turn, 1 is right turn, everything else is placeholder
+//int P2[] = {4, 9, 3, 9, 5, 9, 3, 9, 6, 1, 9, 1, 1, 9, 6, 2, 9, 1, 2, 9, 3, 9, 3, 9}; //Position 2 [24]
+//int t2[] = {1, 2, 0, 2, 1, 2, 0, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 1, 0, 2, 0, 2, 1, 2}; //0 is left turn, 1 is right turn, everything else is placeholder
+//int P3[] = {2, 9, 2, 9, 3, 9, 2, 9, 9, 9, 6, 1, 9, 1, 1, 9, 4, 9, 4, 9}; //Position 3 [20]
+//int t3[] = {1, 2, 0, 2, 1, 2, 0, 2, 2, 2, 0, 1, 2, 0, 1, 2, 0, 2, 1, 2}; //0 is left turn, 1 is right turn, everything else is placeholder
+//int intersections[25] = {};
+//int turns[25] = {}; 
 
 //Other variables
-int count = 0; //used to count intersections traversed
-int action = 0; //used to traverse above arrays
-boolean clawState = false; //used to determine if claw should be closed or open
-int ball = 0; //denotes turn scenarios i.e. ball = 0 means going for first object, ball = 1 means going for second object, etc.
-boolean getPosition = false; //used when acquiring initial position from IR signal
-
+//int count = 0; //used to count intersections traversed
+//int action = 0; //used to traverse above arrays
+//boolean clawState = false; //used to determine if claw should be closed or open
+//int ball = 0; //denotes turn scenarios i.e. ball = 0 means going for first object, ball = 1 means going for second object, etc.
+//boolean getPosition = false; //used when acquiring initial position from IR signal
+//
 
 void setup() {
   // put your setup code here, to run once:
