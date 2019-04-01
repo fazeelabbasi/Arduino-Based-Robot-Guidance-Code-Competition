@@ -63,6 +63,10 @@ void setup() {
 //    }
 //  }
 
+
+  while(digitalRead(bumper) == LOW){
+ 
+  }
   Serial.begin(9600);
 
   //set up claw
