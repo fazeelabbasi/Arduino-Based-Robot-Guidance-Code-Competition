@@ -184,16 +184,28 @@ void checkPosition(int val){           //When IR signal is received, checks for 
 
 //DRIVE FUNCTIONS FOR ROBOT
 void setSpeed(int leftSPEED, int rightSPEED) {
-  if (leftSPEED == 0)digitalWrite(lDir, LOW);
-  else digitalWrite(lDir, HIGH);
-  if (rightSPEED == 0)digitalWrite(rDir, LOW);
-  else digitalWrite(rDir, HIGH);
+  if (leftSPEED < 0) {
+    digitalWrite(lDir, LOW);
+    leftSpeed = -leftSpeed;
+  }
+  else {
+    digitalWrite(lDir, HIGH);
+  }
+  if (rightSPEED == 0){
+    digitalWrite(rDir, LOW);
+  }
+  else {
+    digitalWrite(rDir, HIGH);
+  }
 
 //  leftSPEED /= 2;
 //  leftSPEED += 128;
 
   rightSPEED /= 2;
-  rightSPEED += 128;
+  
+  if (rightSpeed > 0){
+    rightSPEED += 128;
+  }
   
   analogWrite(rSpe, rightSPEED);
   analogWrite(lSpe, leftSPEED);
@@ -205,45 +217,36 @@ void setSpeed(int leftSPEED, int rightSPEED) {
 
 void driveForward() {
   setSpeed(leftWheelSpeed, rightWheelSpeed);
-  if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(centerSensor) < THRESHOLD) && (analogRead(leftSensor) < THRESHOLD))
-  {
-     Serial.println("Corecting LEFT BIAS");
-    analogWrite(rSpe, rightWheelSpeed - 15);
-    analogWrite(lSpe, leftWheelSpeed + 15);
-    delay(speedChangeDelay);
-  }
-  else if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(centerSensor) < THRESHOLD) && (analogRead(rightSensor) < THRESHOLD))
-  {
-    Serial.println("Corecting RIGHT BIAS");
-    analogWrite(rSpe, rightWheelSpeed + 15);
-    analogWrite(lSpe, leftWheelSpeed - 15);
-    delay(speedChangeDelay);
-  }
+//  if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(centerSensor) < THRESHOLD) && (analogRead(leftSensor) < THRESHOLD))
+//  {
+//     Serial.println("Corecting LEFT BIAS");
+//    analogWrite(rSpe, rightWheelSpeed - 15);
+//    analogWrite(lSpe, leftWheelSpeed + 15);
+//    delay(speedChangeDelay);
+//  }
+//  else if ((analogRead(leftSensor) > THRESHOLD) && (analogRead(centerSensor) < THRESHOLD) && (analogRead(rightSensor) < THRESHOLD))
+//  {
+//    Serial.println("Corecting RIGHT BIAS");
+//    analogWrite(rSpe, rightWheelSpeed + 15);
+//    analogWrite(lSpe, leftWheelSpeed - 15);
+//    delay(speedChangeDelay);
+//  }
 }
 
 void stopDriving(){
-  digitalWrite(rDir, HIGH); 
-  digitalWrite(lDir, HIGH); 
-  analogWrite(rSpe, 0);
-  analogWrite(lSpe, 0);
+  setSpeed(0, 0);
 }
 
 void halfTurn(int dir){
   if(dir == 0){               //left turn
 //     while(!checkSensor(leftSensor)){
-      digitalWrite(rDir, HIGH); 
-      digitalWrite(lDir, HIGH); 
-      analogWrite(rSpe, rightWheelSpeed);
-      analogWrite(lSpe, -leftWheelSpeed);
+      setSpeed(-leftWheelSpeed, rightWheelSpeed);
       delay(turnDelay);
 //     }
   }
   else if (dir == 1){         //right turn
 //     while(!checkSensor(rightSensor)){
-      digitalWrite(rDir, HIGH); 
-      digitalWrite(lDir, HIGH); 
-      analogWrite(rSpe, -rightWheelSpeed);
-      analogWrite(lSpe, leftWheelSpeed);
+      setSpeed(leftWheelSpeed, -rightWheelSpeed);
       delay(turnDelay);
 //     }
   } 
@@ -253,19 +256,13 @@ void backUp(){
   int counter = 0;
   counter++;
   while(counter < 500){
-  digitalWrite(rDir, HIGH); 
-  digitalWrite(lDir, HIGH); 
-  analogWrite(rSpe, -rightWheelSpeed);
-  analogWrite(lSpe, -leftWheelSpeed);
+  setSpeed(-leftWheelSpeed, -rightWheelSpeed);
   }
 }
 
 void turn180degrees(){
 //   while(!checkSensor(centerSensor)){
-    digitalWrite(rDir, HIGH); 
-    digitalWrite(lDir, HIGH); 
-    analogWrite(rSpe, rightWheelSpeed);
-    analogWrite(lSpe, -leftWheelSpeed);
+    setSpeed(-leftWheelSpeed, rightWheelSpeed);
     delay(2*turnDelay);
 //   } 
 }
