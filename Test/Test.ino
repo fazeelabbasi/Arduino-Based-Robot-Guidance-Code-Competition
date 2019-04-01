@@ -7,8 +7,6 @@ int rSpe = 6;
 int lDir = 5;
 int lSpe = 4;
 
-
-
 //Robot wheel speeds
 int leftWheelSpeed = 175; //set left wheel speed
 int rightWheelSpeed = 175; //set right wheel speed
@@ -91,8 +89,56 @@ void setup() {
 
 void loop() {
 
-  setDRIVE(100, 50);
+  setSpeed(150, 250);
 }                    
+
+void setSpeed(int leftSPEED, int rightSPEED) {
+  if (leftSPEED < 0) {
+    digitalWrite(lDir, LOW);
+    leftSPEED = -leftSPEED;
+  }
+  else {
+    digitalWrite(lDir, HIGH);
+  }
+  if (rightSPEED == 0){
+    digitalWrite(rDir, LOW);
+  }
+  else {
+    digitalWrite(rDir, HIGH);
+  }
+
+//  leftSPEED /= 2;
+//  leftSPEED += 128;
+
+  rightSPEED /= 2;
+  
+  if (rightSPEED > 0){
+    rightSPEED += 128;
+  }
+  
+  analogWrite(rSpe, rightSPEED);
+  analogWrite(lSpe, leftSPEED);
+  Serial.println("Left Speed:");
+  Serial.println(leftSPEED);
+  Serial.println("Right Speed:");
+  Serial.println(rightSPEED);
+}
+
+//void setDRIVE(int leftPOW, int rightPOW) {
+//  if (leftPOW == 0)digitalWrite(lDir, LOW);
+//  else digitalWrite(lDir, HIGH);
+//  if (rightPOW == 0)digitalWrite(rDir, LOW);
+//  else digitalWrite(rDir, HIGH);
+//
+//  leftPOW/=2;
+//  leftPOW+=128;
+//
+//  rightPOW/=2;
+//  rightPOW+=128;
+//  
+//  analogWrite(rSpe, rightPOW);
+//  analogWrite(lSpe, leftPOW);
+//}
 
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
 void checkClaw(){                               //checking claw state ([0] open or [1] closed)
@@ -182,21 +228,6 @@ void checkPosition(int val){           //When IR signal is received, checks for 
 }
 
 //DRIVE FUNCTIONS FOR ROBOT
-void setDRIVE(int leftPOW, int rightPOW) {
-  if (leftPOW == 0)digitalWrite(lDir, LOW);
-  else digitalWrite(lDir, HIGH);
-  if (rightPOW == 0)digitalWrite(rDir, LOW);
-  else digitalWrite(rDir, HIGH);
-
-  leftPOW/=2;
-  leftPOW+=128;
-
-  rightPOW/=2;
-  rightPOW+=128;
-  
-  analogWrite(rSpe, rightPOW);
-  analogWrite(lSpe, leftPOW);
-}
 
 void stopDriving(){
   digitalWrite(rDir, HIGH); 
