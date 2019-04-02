@@ -11,10 +11,10 @@ int mSpeedR = 30;
 int lWSpeed = 96;                             //set left wheel speed
 int rWSpeed = 100;                            //set right wheel speed
 int IR = 2;                                          //used for acquiring initial position
-int bumper = 3;                                      //both bumpers are wired to the same circuit
-int leftSensor = A3;
-int centerSensor = A5;
-int rightSensor = A4;
+int bumper = 2;                                      //both bumpers are wired to the same circuit
+int leftSensor = A0;
+int rightSensor = A1;
+int centerSensor = A2;
 int const THRESHOLD = 640;                           //threshold for light sensors
 int const turnDelay = 750;                          //time for half turn
 int const speedChangeDelay = 200;
@@ -74,13 +74,6 @@ void loop() {
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
 
 
-
-
-
-
-
-
-
 //DRIVE FUNCTIONS FOR ROBOT
 void setSpeed(int leftSPEED, int rightSPEED) {
     if (leftSPEED < 0)digitalWrite(lDir, LOW);
@@ -119,11 +112,11 @@ void lineFollowInt(int i){
 
     while(1){
       
-//      Serial.println("--------------------SENSOR START LCR------------------------");
-//      Serial.println(analogRead(leftSensor));
-//      Serial.println(analogRead(centerSensor));
-//      Serial.println(analogRead(rightSensor));
-//      Serial.println("--------------------SENSOR   END LCR------------------------");
+      Serial.println("--------------------SENSOR START LCR------------------------");
+      Serial.println(analogRead(leftSensor));
+      Serial.println(analogRead(centerSensor));
+      Serial.println(analogRead(rightSensor));
+      Serial.println("--------------------SENSOR   END LCR------------------------");
      
       if((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)){      //Auto-calibration
         setSpeed(lWSpeed, mSpeedR);
