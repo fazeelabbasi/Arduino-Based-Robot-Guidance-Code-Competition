@@ -86,9 +86,6 @@ void setSpeed(int leftSPEED, int rightSPEED) {
 void lineFollowInt(int i){
   for(int n = 0; n < i; n++){
     setSpeed(lWSpeed,rWSpeed);
-          Serial.println("--------------------N------------------------");
-    Serial.println(n);
-          Serial.println("--------------------N------------------------");
     while(1){
       
 //      Serial.println("--------------------SENSOR START LCR------------------------");
@@ -156,18 +153,9 @@ void turnR(int i){
 //  setSpeed(0, 0);
 }
 
-void turn180(int i){
-  int flag = 0;
-  for(int n = 0; n < i; n++){
-    setSpeed(-lWSpeed, rWSpeed);
-    delay(turnDelay);
-    while(flag < 25){
-      if((analogRead(leftSensor) > THRESHOLD) || (analogRead(centerSensor) > THRESHOLD)){
-        flag++; 
-      }
-    }
-    flag = 0;
-  }
+void turn180(){
+  turnLeft();
+  turnLeft();
 }
 
 void grab()
@@ -209,30 +197,37 @@ void grab()
   attachServo(false);
   delay(1000);
   setSpeed(-lWSpeed, -rWSpeed);
+  while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD))) {
+    if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)) {    //Auto-calibration
+      setSpeed(lWSpeed, rWSpeed - 60);
+    }
+    else if ((analogRead(rightSensor) < THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)) {
+      setSpeed(lWSpeed-60, rWSpeed);
+    }
+    else {
+      setSpeed(lWSpeed, rWSpeed);
+    }
+  }
+  turn180();
   delay(300);
-  while(true);
 }
 
 //void release()
 //{
-//  digitalWrite(rDir, HIGH);
-//  digitalWrite(lDir, HIGH);
-//  analogWrite(rSpe, rWSpeed);
-//  analogWrite(lSpe, lWSpeed);
+//  tilt.write(straightUp);
+//  setSpeed(lWSpeed, rWSpeed);
 //  while (digitalRead(bumper) == 1) {
-//    if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)) {    //Auto-calibration
-//      analogWrite(rSpe, rWSpeed - 60);
-//      analogWrite(lSpe, lWSpeed);
-//    }
-//    else if ((analogRead(rightSensor) < THRESHOLD) && (analogRead(centerSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)) {
-//      analogWrite(rSpe, rWSpeed);
-//      analogWrite(lSpe, lWSpeed - 60);
-//    }
-//    else {
-//      analogWrite(rSpe, rWSpeed);
-//      analogWrite(lSpe, lWSpeed);
-//    }
-//  }
+//    if((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)){      //Auto-calibration
+//        setSpeed(lWSpeed, (rWSpeed - adjSpeed));
+//        delay(100);
+//      }
+//      else if((analogRead(rightSensor) < THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)){
+//        setSpeed((lWSpeed - adjSpeed), rWSpeed);
+//        delay(100);
+//      }
+//      else{
+//        setSpeed(lWSpeed,rWSpeed);
+//      }
 //  attachServo(true);
 //  tilt.write(180);
 //  delay(250);
