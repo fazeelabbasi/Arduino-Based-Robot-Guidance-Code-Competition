@@ -16,7 +16,7 @@ int leftSensor = A3;
 int centerSensor = A5;
 int rightSensor = A4;
 int const THRESHOLD = 640;                           //threshold for light sensors
-int const turnDelay = 550;                          //time for half turn
+int const turnDelay = 750;                          //time for half turn
 int const speedChangeDelay = 200;
 
 Servo grip, tilt, pan;
@@ -64,15 +64,8 @@ void setup() {
 void loop() {
  
      
-  lineFollowInt(3);                 //drive forwards
-  turnL(1);
-
-  lineFollowInt(2);                 //drive forwards
-  turnR(1);
-
-  turn180(1);
-
-  stop();
+  lineFollowInt(1);                 //drive forwards 
+  turnLeft();
 
 //  setSpeed(-lWSpeed, -rWSpeed);
 
@@ -160,18 +153,18 @@ void stop(){
     }
   }
 
-void turnL(int i){
-  int flag = 0;
-  for(int n = 0; n < i; n++){
-    setSpeed(-lWSpeed, rWSpeed);
-    delay(turnDelay/2);
-    while(flag < 25){
-      if((analogRead(leftSensor) > THRESHOLD) || (analogRead(centerSensor) > THRESHOLD)){
-        flag++; 
-      }
-    }
-    flag = 0;
-  }
+void turnLeft()
+{
+  delay(700);
+  Serial.println("LEFT TURN");
+  digitalWrite(rDir, HIGH);
+  digitalWrite(lDir, LOW);
+  analogWrite(rSpe, rWSpeed);
+  analogWrite(lSpe, lWSpeed);
+  delay(turnDelay);
+  while (analogRead(centerSensor) < THRESHOLD) {}
+  analogWrite(rSpe, 0);
+  analogWrite(lSpe, 0);
 }
 
 void turnR(int i){
@@ -179,7 +172,7 @@ void turnR(int i){
   for(int n = 0; n < i; n++){
     setSpeed(lWSpeed, -rWSpeed);
     delay(turnDelay/2);
-    while(flag < 25){
+    while(flag < 15){
       if((analogRead(rightSensor) > THRESHOLD) || (analogRead(centerSensor) > THRESHOLD)){
         flag++; 
       }
