@@ -283,3 +283,40 @@ void attachServo(bool tf)
     pan.detach();
   }
 }
+
+void pathLeft(){
+  //First Object
+  lineFollowInt(5);
+  turnRight();
+  grab();
+  lineFollowInt(3);
+  turnLeft();
+  release();
+
+  //Second Object
+  lineFollowInt(1);
+  turnLeft();
+  grab();
+  lineFollowInt(1);
+  release();
+
+  //Third Object
+  grab();
+  release();
+
+  //Fourth Object
+  lineFollowInt(2);
+  turnRight();
+  grab();
+  lineFollowInt(3);
+  turnLeft();
+  release();
+
+  //Fifth Object
+  lineFollowInt(4);
+  turnRight();
+  grab();
+  lineFollowInt(3);
+  turnLeft();
+  release();
+}
