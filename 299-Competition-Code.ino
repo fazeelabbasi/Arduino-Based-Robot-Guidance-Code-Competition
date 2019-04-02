@@ -6,8 +6,11 @@ int rDir = 7;
 int lDir = 4;
 int rSpe = 6;
 int lSpe = 5;
+
+//RATIO 150:250 for low battery, 150:70 for full battery
 int leftWheelSpeed = 150;                             //set left wheel speed
-int rightWheelSpeed = 250;                            //set right wheel speed
+int rightWheelSpeed = 60;                            //set right wheel speed 
+
 int IR = 2;                                          //used for acquiring initial position
 int bumper = 3;                                      //both bumpers are wired to the same circuit
 int leftSensor = A3;
