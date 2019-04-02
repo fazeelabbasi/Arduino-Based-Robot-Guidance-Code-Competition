@@ -55,6 +55,8 @@ void loop() {
 //  lineFollowInt(1);                 //drive forwards 
 //  turnLeft();
   grab();
+  release();
+  while(true);
 //  setSpeed(-lWSpeed, -rWSpeed);
 }                    
 
@@ -248,7 +250,7 @@ void grab()
 //  analogWrite(rSpe, rWSpeed);
 //  analogWrite(lSpe, lWSpeed);
 //  delay(300);
-//    turnR();
+//  setSpeed(0,0);
 //}
 
 void attachServo(bool tf)
