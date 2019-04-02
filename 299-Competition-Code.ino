@@ -6,7 +6,7 @@ int rDir = 7;
 int lDir = 4;
 int rSpe = 6;
 int lSpe = 5;
-int adjSpeed = 15;
+int adjSpeed = 40;
 int lWSpeed = 90;                             //set left wheel speed
 int rWSpeed = 96;                            //set right wheel speed
 int IR = 2;                                          //used for acquiring initial position
@@ -28,8 +28,8 @@ int straightPan = 90; //angle of claw (facing forward)
 int straightUp = 180;
 
 //open 0 - 180 close
-int holdDice = 120; //claw gripping state
-int releaseDice = 40; //claw open state
+int holdDice = 150; //claw gripping state
+int releaseDice = 5; //claw open state
 
 //Other variables
 
@@ -43,6 +43,8 @@ void setup() {
   tilt.attach(tiltPin);
   pan.attach(panPin);
   pan.write(90);
+  grip.write(90);
+  tilt.write(straightUp);
 
   //set up motors
   pinMode(rDir, OUTPUT); 
@@ -52,11 +54,39 @@ void setup() {
 }
 
 void loop() {    
-  lineFollowInt(1);                 //drive forwards 
-  turnRight();
-  grab();
-  lineFollowInt(1);
+//  lineFollowInt(1);                 //drive forwards 
+//  turnRight();
+//  grab();
+//  lineFollowInt(1);
+//  turnLeft();
+//  release();
+//  lineFollowInt(2);                 //drive forwards 
+//  turnRight();
+//  grab();
+//  lineFollowInt(1);
+//  turnLeft();
+//  release();
+////  lineFollowInt(4);                 //drive forwards 
+////  turnRight();
+//  grab();
+////  lineFollowInt(1);
+////  turnLeft();
+//  release();
+//  lineFollowInt(4);                 //drive forwards 
+//  turnLeft();
+//  lineFollowInt(1);
+//  turnRight();
+//  grab();
+//  lineFollowInt(1);
+//  turnLeft();
+//  lineFollowInt(1);
+//  turnRight();
+//  release();
+  lineFollowInt(3);
   turnLeft();
+  grab();
+  lineFollowInt(3);
+  turnRight();
   release();
   while(true);
 //  setSpeed(-lWSpeed, -rWSpeed);
@@ -91,12 +121,6 @@ void lineFollowInt(int i){
   for(int n = 0; n < i; n++){
     setSpeed(lWSpeed,rWSpeed);
     while(1){
-      
-//      Serial.println("--------------------SENSOR START LCR------------------------");
-//      Serial.println(analogRead(leftSensor));
-//      Serial.println(analogRead(centerSensor));
-//      Serial.println(analogRead(rightSensor));
-//      Serial.println("--------------------SENSOR END LCR------------------------");
      
       if((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)){      //Auto-calibration
         setSpeed(lWSpeed, (rWSpeed - adjSpeed));
@@ -120,7 +144,6 @@ void lineFollowInt(int i){
   }
 //  setSpeed(0,0);
 }
-
 
 void stop(){
 
@@ -155,10 +178,10 @@ void grab()
   setSpeed(lWSpeed, rWSpeed);
   while (digitalRead(bumper) == 1) {
     if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)) {    //Auto-calibration
-      setSpeed(lWSpeed, rWSpeed - 60);
+      setSpeed(lWSpeed, rWSpeed - adjSpeed);
     }
     else if ((analogRead(rightSensor) < THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)) {
-      setSpeed(lWSpeed-60, rWSpeed);
+      setSpeed(lWSpeed-adjSpeed, rWSpeed);
     }
     else {
       setSpeed(lWSpeed, rWSpeed);
@@ -173,26 +196,35 @@ void grab()
   delay(500);
   attachServo(true);
   tilt.write(straightUp);
-  delay(250);
+  //delay(250);
+   delay(25);
   pan.write(straightPan);
-  delay(250);
+  delay(25);
+  //delay(250);
   grip.write(0);
   delay(250);
   tilt.write(grabHeight);
-  delay(3000);
-  grip.write(180);
+  delay(1000);
+  grip.write(130);
   delay(1000);
   tilt.write(straightUp);
   delay(250);
-  attachServo(false);
+//  attachServo(false);
+//  delay(1000);
+//  setSpeed(-lWSpeed, -rWSpeed);
+//  delay(350);
+//  turnLeft();
+//  turnLeft();
+//  delay(300);
+attachServo(false);
   delay(1000);
   setSpeed(-lWSpeed, -rWSpeed);
   while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD))) {
     if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)) {    //Auto-calibration
-      setSpeed(-lWSpeed, -rWSpeed - 60);
+      setSpeed(-lWSpeed, -(rWSpeed - adjSpeed-10));
     }
     else if ((analogRead(rightSensor) < THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)) {
-      setSpeed(-lWSpeed-60, -rWSpeed);
+      setSpeed(-(lWSpeed-adjSpeed-10), -rWSpeed);
     }
     else {
       setSpeed(-lWSpeed, -rWSpeed);
@@ -201,6 +233,7 @@ void grab()
   turnLeft();
   delay(300);
 }
+
 
 void release()
 {
@@ -231,14 +264,13 @@ void release()
   delay(250);
   tilt.write(180);
   delay(250);
-  attachServo(false);
+   attachServo(false);
   delay(1000);
-  digitalWrite(rDir, LOW);
-  digitalWrite(lDir, LOW);
-  analogWrite(rSpe, rWSpeed);
-  analogWrite(lSpe, lWSpeed);
+  setSpeed(-lWSpeed, -rWSpeed);
+  delay(250);
+  turnLeft();
+  
   delay(300);
-  setSpeed(0,0);
 }
 
 void attachServo(bool tf)
