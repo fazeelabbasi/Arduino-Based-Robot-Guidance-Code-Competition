@@ -8,7 +8,7 @@ int rSpe = 6;
 int lSpe = 5;
 int adjSpeed = 15;
 int lWSpeed = 90;                             //set left wheel speed
-int rWSpeed = 100;                            //set right wheel speed
+int rWSpeed = 98;                            //set right wheel speed
 int IR = 2;                                          //used for acquiring initial position
 int bumper = 2;                                      //both bumpers are wired to the same circuit
 int leftSensor = A0;
@@ -22,27 +22,20 @@ Servo grip, tilt, pan;
 int panPin = 8;
 int gripPin = 10;
 int tiltPin = 9;
-int grabHeight = 90; //height for gripping
+int grabHeight = 75; //height for gripping
 int releaseHeight = 120; //height for releasing object
 int straightPan = 90; //angle of claw (facing forward)
+int straightUp = 180;
 
 //open 0 - 180 close
 int holdDice = 120; //claw gripping state
 int releaseDice = 40; //claw open state
 
-
-
-
-
 //Other variables
 
 boolean clawState = false; //used to determine if claw should be closed or open
 
-
-
-void setup() {
-
- 
+void setup() { 
   Serial.begin(9600);
 
   //set up claw
@@ -55,19 +48,14 @@ void setup() {
   pinMode(rDir, OUTPUT); 
   pinMode(lDir, OUTPUT); 
   pinMode(rSpe, OUTPUT); 
-  pinMode(lSpe, OUTPUT);
-
-  
+  pinMode(lSpe, OUTPUT);  
 }
 
-void loop() {
- 
-     
-  lineFollowInt(1);                 //drive forwards 
-  turnLeft();
-
+void loop() {    
+//  lineFollowInt(1);                 //drive forwards 
+//  turnLeft();
+  grab();
 //  setSpeed(-lWSpeed, -rWSpeed);
-
 }                    
 
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
@@ -101,7 +89,6 @@ void lineFollowInt(int i){
           Serial.println("--------------------N------------------------");
     Serial.println(n);
           Serial.println("--------------------N------------------------");
-
     while(1){
       
 //      Serial.println("--------------------SENSOR START LCR------------------------");
@@ -180,5 +167,107 @@ void turn180(int i){
       }
     }
     flag = 0;
+  }
+}
+
+void grab()
+{
+  tilt.write(straightUp);
+  Serial.println("HITING TO GRAB");
+  setSpeed(lWSpeed, rWSpeed);
+  while (digitalRead(bumper) == 1) {
+    if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)) {    //Auto-calibration
+      setSpeed(lWSpeed, rWSpeed - 60);
+    }
+    else if ((analogRead(rightSensor) < THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)) {
+      setSpeed(lWSpeed-60, rWSpeed);
+    }
+    else {
+      setSpeed(lWSpeed, rWSpeed);
+    }
+  }
+  Serial.println("GRABBING");
+  delay(500);
+  setSpeed(-lWSpeed, -rWSpeed);
+  delay(300);
+  analogWrite(rSpe, 0);
+  analogWrite(lSpe, 0);
+  delay(500);
+  attachServo(true);
+  tilt.write(straightUp);
+  delay(250);
+  pan.write(straightPan);
+  delay(250);
+  grip.write(0);
+  delay(250);
+  tilt.write(grabHeight);
+  delay(3000);
+  grip.write(180);
+  delay(1000);
+  tilt.write(straightUp);
+  delay(250);
+  attachServo(false);
+  delay(1000);
+  setSpeed(-lWSpeed, -rWSpeed);
+  delay(300);
+  while(true);
+}
+
+//void release()
+//{
+//  digitalWrite(rDir, HIGH);
+//  digitalWrite(lDir, HIGH);
+//  analogWrite(rSpe, rWSpeed);
+//  analogWrite(lSpe, lWSpeed);
+//  while (digitalRead(bumper) == 1) {
+//    if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)) {    //Auto-calibration
+//      analogWrite(rSpe, rWSpeed - 60);
+//      analogWrite(lSpe, lWSpeed);
+//    }
+//    else if ((analogRead(rightSensor) < THRESHOLD) && (analogRead(centerSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)) {
+//      analogWrite(rSpe, rWSpeed);
+//      analogWrite(lSpe, lWSpeed - 60);
+//    }
+//    else {
+//      analogWrite(rSpe, rWSpeed);
+//      analogWrite(lSpe, lWSpeed);
+//    }
+//  }
+//  attachServo(true);
+//  tilt.write(180);
+//  delay(250);
+//  pan.write(90);
+//  delay(250);
+//  grip.write(180);
+//  delay(250);
+//  tilt.write(grabHeight);
+//  delay(50);
+//  grip.write(0);
+//  delay(250);
+//  tilt.write(180);
+//  delay(250);
+//  attachServo(false);
+//  delay(1000);
+//  digitalWrite(rDir, LOW);
+//  digitalWrite(lDir, LOW);
+//  analogWrite(rSpe, rWSpeed);
+//  analogWrite(lSpe, lWSpeed);
+//  delay(300);
+//    turnR();
+//}
+
+void attachServo(bool tf)
+{
+  if (tf == true)
+  {
+    grip.attach(gripPin);
+    tilt.attach(tiltPin);
+    pan.attach(panPin);
+  }
+  else
+  {
+    grip.detach();
+    tilt.detach();
+    pan.detach();
   }
 }
