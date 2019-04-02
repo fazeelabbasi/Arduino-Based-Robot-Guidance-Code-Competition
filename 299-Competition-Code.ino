@@ -54,41 +54,9 @@ void setup() {
 }
 
 void loop() {    
-  lineFollowInt(1);                 //drive forwards 
-  turnRight();
-  grab();
-  lineFollowInt(1);
-  turnLeft();
-  release();
-  lineFollowInt(2);                 //drive forwards 
-  turnRight();
-  grab();
-  lineFollowInt(1);
-  turnLeft();
-  release();
-//  lineFollowInt(4);                 //drive forwards 
-//  turnRight();
-  grab();
-//  lineFollowInt(1);
-//  turnLeft();
-  release();
-  lineFollowInt(4);                 //drive forwards 
-  turnLeft();
-  lineFollowInt(1);
-  turnRight();
-  grab();
-  lineFollowInt(2);
-  turnLeft();
-  lineFollowInt(1);
-  turnRight();
-  release();
-  lineFollowInt(3);
-  turnLeft();
-  grab();
-  lineFollowInt(3);
-  turnRight();
-  release();
-  while(true);
+  if()pathLeft();
+    else if()pathCenter();
+      else if()pathRight();
  
 }                    
 
@@ -283,3 +251,5 @@ void attachServo(bool tf)
     pan.detach();
   }
 }
+pathRight(){
+  }
