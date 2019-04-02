@@ -6,17 +6,16 @@ int rDir = 7;
 int lDir = 4;
 int rSpe = 6;
 int lSpe = 5;
-int mSpeedL = 30;
-int mSpeedR = 30;
-int lWSpeed = 96;                             //set left wheel speed
+int adjSpeed = 15;
+int lWSpeed = 90;                             //set left wheel speed
 int rWSpeed = 100;                            //set right wheel speed
 int IR = 2;                                          //used for acquiring initial position
 int bumper = 2;                                      //both bumpers are wired to the same circuit
 int leftSensor = A0;
 int rightSensor = A1;
 int centerSensor = A2;
-int const THRESHOLD = 640;                           //threshold for light sensors
-int const turnDelay = 750;                          //time for half turn
+int const THRESHOLD = 630;                           //threshold for light sensors
+int const turnDelay = 1200;                          //time for half turn
 int const speedChangeDelay = 200;
 
 Servo grip, tilt, pan;
@@ -76,31 +75,24 @@ void loop() {
 
 //DRIVE FUNCTIONS FOR ROBOT
 void setSpeed(int leftSPEED, int rightSPEED) {
-    if (leftSPEED < 0)digitalWrite(lDir, LOW);
+  if (leftSPEED < 0) {
+    digitalWrite(lDir, LOW);
+    leftSPEED = -leftSPEED;
+  }
   else digitalWrite(lDir, HIGH);
-  if (rightSPEED < 0)digitalWrite(rDir, LOW);
+  if (rightSPEED < 0) {
+    digitalWrite(rDir, LOW);
+    rightSPEED = -rightSPEED;
+  }
   else digitalWrite(rDir, HIGH);
-
-//  if (leftSPEED < 0) {
-//    digitalWrite(lDir, LOW);
-//    leftSPEED = -leftSPEED;
-//  }
-//  else {
-//    digitalWrite(lDir, HIGH);
-//  }
-//  if (rightSPEED == 0){
-//    digitalWrite(rDir, LOW);
-//  }
-//  else {
-//    digitalWrite(rDir, HIGH);
-//  }
 
   analogWrite(rSpe, rightSPEED);
   analogWrite(lSpe, leftSPEED);
-//  Serial.println("Left Speed:");
-//  Serial.println(leftSPEED);
-//  Serial.println("Right Speed:");
-//  Serial.println(rightSPEED);
+
+  Serial.println("Left Speed:");
+  Serial.println(leftSPEED);
+  Serial.println("Right Speed:");
+  Serial.println(rightSPEED);
 }
 
 void lineFollowInt(int i){
@@ -112,17 +104,19 @@ void lineFollowInt(int i){
 
     while(1){
       
-      Serial.println("--------------------SENSOR START LCR------------------------");
-      Serial.println(analogRead(leftSensor));
-      Serial.println(analogRead(centerSensor));
-      Serial.println(analogRead(rightSensor));
-      Serial.println("--------------------SENSOR   END LCR------------------------");
+//      Serial.println("--------------------SENSOR START LCR------------------------");
+//      Serial.println(analogRead(leftSensor));
+//      Serial.println(analogRead(centerSensor));
+//      Serial.println(analogRead(rightSensor));
+//      Serial.println("--------------------SENSOR END LCR------------------------");
      
       if((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)){      //Auto-calibration
-        setSpeed(lWSpeed, mSpeedR);
+        setSpeed(lWSpeed, (rWSpeed - adjSpeed));
+        delay(100);
       }
       else if((analogRead(rightSensor) < THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)){
-        setSpeed(mSpeedL, rWSpeed);
+        setSpeed((lWSpeed - adjSpeed), rWSpeed);
+        delay(100);
       }
       else{
         setSpeed(lWSpeed,rWSpeed);
@@ -134,6 +128,7 @@ void lineFollowInt(int i){
         break;
       }
     }
+    Serial.println("Intersection passed!");
   }
 //  setSpeed(0,0);
 }
@@ -148,12 +143,9 @@ void stop(){
 
 void turnLeft()
 {
-  delay(700);
+  delay(500);
   Serial.println("LEFT TURN");
-  digitalWrite(rDir, HIGH);
-  digitalWrite(lDir, LOW);
-  analogWrite(rSpe, rWSpeed);
-  analogWrite(lSpe, lWSpeed);
+  setSpeed(-lWSpeed,rWSpeed);
   delay(turnDelay);
   while (analogRead(centerSensor) < THRESHOLD) {}
   analogWrite(rSpe, 0);
