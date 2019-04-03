@@ -56,7 +56,7 @@ void setup() {
   pinMode(lDir, OUTPUT); 
   pinMode(rSpe, OUTPUT); 
   pinMode(lSpe, OUTPUT);
-  waitButton();
+
 }
 
 void loop() { 
