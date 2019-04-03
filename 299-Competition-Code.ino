@@ -292,35 +292,38 @@ pathCentre() {
 void pathLeft(){
   //First Object
   lineFollowInt(5);
-
   turnRight();
-  grab();
-  lineFollowInt(1);
-  turnLeft();
-  release();
-
-  lineFollowInt(5);
-  turnLeft();
   grab();
   lineFollowInt(3);
+  turnLeft();
+  release();
+
+  //Second Object
+  lineFollowInt(1);
+  turnLeft();
+  grab();
+  lineFollowInt(1);
   turnRight();
   release();
 
+  //Third Object
   grab();
   release();
 
+  //Fourth Object
   lineFollowInt(2);
-  turnRight();
+  turnLeft();
   grab();
   lineFollowInt(1);
-  turnLeft();
+  turnRight();
   release();
 
+  //Fifth Object
   lineFollowInt(4);
-  turnRight();
+  turnLeft();
   grab();
   lineFollowInt(1);
-  turnLeft();
+  turnRight();
   release();
 }
 void pathRight(){
