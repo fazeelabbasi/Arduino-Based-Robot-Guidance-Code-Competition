@@ -7,8 +7,8 @@ int lDir = 4;
 int rSpe = 6;
 int lSpe = 5;
 int adjSpeed = 60;
-int lWSpeed = 90 + 30;                             //set left wheel speed
-int rWSpeed = 96 + 30;                            //set right wheel speed
+int lWSpeed = 90 + 40;                             //set left wheel speed
+int rWSpeed = 96 + 40;                            //set right wheel speed
 int IR = 2;                                          //used for acquiring initial position
 int bumper = 2;                                      //both bumpers are wired to the same circuit
 int leftSensor = A0;
@@ -58,7 +58,9 @@ void loop() {
 //  if()pathLeft();
 //    else if()pathCentre();
 //      else if()
-        pathRight();
+//        pathRight();
+        pathCentre();
+        while(1);
 }                    
 
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
@@ -168,32 +170,16 @@ void grab()
   tilt.write(grabHeight);
   delay(1500);
   grip.write(90);
-  delay(1000);
+  delay(700);
   tilt.write(straightUp);
   delay(250);
-//  attachServo(false);
-//  delay(1000);
-//  setSpeed(-lWSpeed, -rWSpeed);
-//  delay(350);
-//  turnLeft();
-//  turnLeft();
-//  delay(300);
-attachServo(false);
-  delay(1000);
+  attachServo(false);
+  delay(500);
   setSpeed(-lWSpeed+10, -rWSpeed+10);
-  while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD))) {
-//    if ((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)) {    //Auto-calibration
-//      setSpeed(-lWSpeed, -(rWSpeed - adjSpeed-10));
-//    }
-//    else if ((analogRead(rightSensor) < THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)) {
-//      setSpeed(-(lWSpeed-adjSpeed-10), -rWSpeed);
-//    }
-//    else {
-//      setSpeed(-lWSpeed+10, -rWSpeed+10);
-//    }
-  }
+  while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)));
+  setSpeed(40,40);
   turnLeft();
-  delay(300);
+  delay(150);
 }
 
 
@@ -212,7 +198,8 @@ void release()
       }
       else{
         setSpeed(lWSpeed,rWSpeed);
-      }}
+      }
+  }
   attachServo(true);
   tilt.write(180);
   delay(250);
@@ -232,9 +219,7 @@ void release()
   delay(250);
   turnLeft();
   
-  delay(300);
-//   lWSpeed += 10;                             
-//  rWSpeed += 10;        
+  delay(300);      
 }
 
 void attachServo(bool tf)
@@ -313,9 +298,15 @@ void pathLeft(){
   turnRight();
   release();
 
+  lWSpeed += 5;
+  rWSpeed += 5;
+  
   //Third Object
   grab();
   release();
+
+  lWSpeed += 10;
+  rWSpeed += 10;
 
   //Fourth Object
   lineFollowInt(2);
@@ -324,6 +315,9 @@ void pathLeft(){
   lineFollowInt(1);
   turnRight();
   release();
+  
+  lWSpeed += 10;
+  rWSpeed += 10;
 
   //Fifth Object
   lineFollowInt(4);
@@ -335,7 +329,6 @@ void pathLeft(){
 }
 void pathRight(){
   //First Object
- 
 
   lineFollowInt(1);
   turnRight();
@@ -354,6 +347,9 @@ void pathRight(){
   grab();
   release();
 
+  lWSpeed += 10;
+  rWSpeed += 10;
+
   lineFollowInt(2);
   turnRight();
   grab();
@@ -361,11 +357,13 @@ void pathRight(){
    turnLeft();
   release();
 
+  lWSpeed += 10;
+  rWSpeed += 10;
+
   lineFollowInt(4);
   turnRight();
   grab();
   lineFollowInt(1);
   turnLeft();
   release();
-
   }
