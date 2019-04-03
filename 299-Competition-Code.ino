@@ -15,7 +15,7 @@ int leftSensor = A0;
 int rightSensor = A1;
 int centerSensor = A2;
 int const THRESHOLD = 550;                           //threshold for light sensors
-int const turnDelay = 300;                          //time for half turn
+int const turnDelay = 400;                          //time for half turn
 int const speedChangeDelay = 200;
 
 Servo grip, tilt, pan;
