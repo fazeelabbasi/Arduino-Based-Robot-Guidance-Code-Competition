@@ -15,7 +15,7 @@ int leftSensor = A0;
 int rightSensor = A1;
 int centerSensor = A2;
 int const THRESHOLD = 550;                           //threshold for light sensors
-int const turnDelay = 400;                          //time for half turn
+int const turnDelay = 1200-600;                          //time for half turn
 int const speedChangeDelay = 200;
 
 Servo grip, tilt, pan;
@@ -28,7 +28,7 @@ int straightPan = 90; //angle of claw (facing forward)
 int straightUp = 180;
 
 //open 0 - 180 close
-int holdDice = 170; //claw gripping state
+int holdDice = 90; //claw gripping state
 int releaseDice = 5; //claw open state
 
 //Other variables
@@ -43,7 +43,7 @@ void setup() {
   tilt.attach(tiltPin);
   pan.attach(panPin);
   pan.write(90);
-  grip.write(0);
+  grip.write(90);
   tilt.write(straightUp);
 
   //set up motors
@@ -58,9 +58,8 @@ void loop() {
 //  if()pathLeft();
 //    else if()pathCentre();
 //      else if()
-//        pathRight();
-        pathCentre();
-//  pathLeft();
+        pathRight();
+//        pathCentre();
         while(1);
 }                    
 
@@ -138,8 +137,6 @@ void turnRight(){
 
 void grab()
 {
-  lWSpeed += 30;
-  rWSpeed += 30;
   tilt.write(straightUp);
   Serial.println("HITING TO GRAB");
   setSpeed(lWSpeed, rWSpeed);
@@ -155,49 +152,42 @@ void grab()
     }
   }
   Serial.println("GRABBING");
-  delay(50);
-  lWSpeed -= 30;
-  rWSpeed -= 30;
+  delay(500);
   setSpeed(-lWSpeed, -rWSpeed);
-  delay(200);
+  delay(225);
   analogWrite(rSpe, 0);
   analogWrite(lSpe, 0);
-  delay(100);
+  delay(500);
   attachServo(true);
   tilt.write(straightUp);
   //delay(250);
    delay(25);
   pan.write(straightPan);
   delay(25);
+  //delay(250);
   grip.write(0);
+  delay(250);
   tilt.write(grabHeight);
-  delay(1750);
-  grip.write(holdDice);
+  delay(1500);
+  grip.write(90);
   delay(700);
   tilt.write(straightUp);
   delay(250);
   attachServo(false);
-  delay(100);
-  setSpeed(-lWSpeed+15, -rWSpeed+15);
+  delay(500);
+  setSpeed(-lWSpeed+10, -rWSpeed+10);
   while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)));
-  setSpeed(20,20);
-  lWSpeed -= 10;
-  rWSpeed -= 10;
+  setSpeed(40,40);
   turnLeft();
-  lWSpeed += 10;
-  rWSpeed += 10;
   delay(150);
 }
 
 
 void release()
 {
-  lWSpeed += 40;
-  rWSpeed += 40;
   tilt.write(straightUp);
   setSpeed(lWSpeed, rWSpeed);
   while (digitalRead(bumper) == 1) {
-    
     if((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)){      //Auto-calibration
         setSpeed(lWSpeed, (rWSpeed - adjSpeed));
         delay(100);
@@ -212,21 +202,19 @@ void release()
   }
   attachServo(true);
   tilt.write(180);
-  delay(25);
+  delay(250);
   pan.write(90);
-  delay(25);
-  grip.write(holdDice);
-  delay(25);
+  delay(250);
+  grip.write(90);
+  delay(250);
   tilt.write(grabHeight);
-  delay(100);
+  delay(50);
   grip.write(0);
   delay(250);
   tilt.write(180);
   delay(250);
-  attachServo(false);
-  delay(100);
-  lWSpeed -= 30;
-  rWSpeed -= 30;
+   attachServo(false);
+  delay(1000);
   setSpeed(-lWSpeed, -rWSpeed);
   delay(250);
   turnLeft();
@@ -263,35 +251,37 @@ void pathCentre() {
   lineFollowInt(2);
   turnLeft();
   release();
+  
   lineFollowInt(3);                 //drive forwards 
   turnLeft();
   grab();
   lineFollowInt(2);
   turnRight();
   release();
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of e3c0110... all paths speed up
-  grab();
-  release();
-  lineFollowInt(5);                 //drive forwards 
-  turnLeft();
-  lineFollowInt(2);
-  turnRight();
-  grab();
-  lineFollowInt(1);
-  turnLeft();
-  lineFollowInt(2);
-  turnRight();
-  release();
-<<<<<<< HEAD
 
   lWSpeed += 5;
   rWSpeed += 5;
   
-=======
->>>>>>> parent of e3c0110... all paths speed up
+  grab();
+  release();
+
+  lWSpeed += 5;
+  rWSpeed += 5;
+  
+  lineFollowInt(5);                 //drive forwards 
+  turnLeft();
+  lineFollowInt(2);
+  turnRight();
+  grab();
+  lineFollowInt(1);
+  turnLeft();
+  lineFollowInt(2);
+  turnRight();
+  release();
+
+  lWSpeed += 10;
+  rWSpeed += 10;
+  
   lineFollowInt(5);                 //drive forwards 
   turnRight();
   lineFollowInt(2);
@@ -302,7 +292,6 @@ void pathCentre() {
   lineFollowInt(2);
   turnLeft();
   release();
-  while(true);
 }
 void pathLeft(){
   //First Object
@@ -323,17 +312,14 @@ void pathLeft(){
 
   lWSpeed += 5;
   rWSpeed += 5;
-
+  
   //Third Object
   grab();
   release();
 
-<<<<<<< HEAD
-=======
-  lWSpeed += 10;
-  rWSpeed += 10;
+  lWSpeed += 5;
+  rWSpeed += 5;
 
->>>>>>> parent of e3c0110... all paths speed up
   //Fourth Object
   lineFollowInt(2);
   turnLeft();
@@ -342,8 +328,8 @@ void pathLeft(){
   turnRight();
   release();
   
-  lWSpeed += 5;
-  rWSpeed += 5;
+  lWSpeed += 10;
+  rWSpeed += 10;
 
   //Fifth Object
   lineFollowInt(4);
@@ -373,12 +359,9 @@ void pathRight(){
   grab();
   release();
 
-<<<<<<< HEAD
-=======
-  lWSpeed += 10;
-  rWSpeed += 10;
+  lWSpeed += 5;
+  rWSpeed += 5;
 
->>>>>>> parent of e3c0110... all paths speed up
   lineFollowInt(2);
   turnRight();
   grab();
