@@ -15,7 +15,7 @@ int leftSensor = A0;
 int rightSensor = A1;
 int centerSensor = A2;
 int const THRESHOLD = 550;                           //threshold for light sensors
-int const turnDelay = 1200-600;                          //time for half turn
+int const turnDelay = 300;                          //time for half turn
 int const speedChangeDelay = 200;
 
 Servo grip, tilt, pan;
@@ -28,7 +28,7 @@ int straightPan = 90; //angle of claw (facing forward)
 int straightUp = 180;
 
 //open 0 - 180 close
-int holdDice = 120; //claw gripping state
+int holdDice = 170; //claw gripping state
 int releaseDice = 5; //claw open state
 
 //Other variables
@@ -178,10 +178,14 @@ void grab()
   delay(250);
   attachServo(false);
   delay(100);
-  setSpeed(-lWSpeed+10, -rWSpeed+10);
+  setSpeed(-lWSpeed+15, -rWSpeed+15);
   while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)));
-  setSpeed(40,40);
+  setSpeed(20,20);
+  lWSpeed -= 10;
+  rWSpeed -= 10;
   turnLeft();
+  lWSpeed += 10;
+  rWSpeed += 10;
   delay(150);
 }
 
@@ -267,11 +271,11 @@ void pathCentre() {
   turnRight();
   release();
 
-  lWSpeed += 5;
-  rWSpeed += 5;
-
   grab();
   release();
+
+  lWSpeed += 5;
+  rWSpeed += 5;
   
   lineFollowInt(5);                 //drive forwards 
   turnLeft();
