@@ -28,7 +28,7 @@ int straightPan = 90; //angle of claw (facing forward)
 int straightUp = 180;
 
 //open 0 - 180 close
-int holdDice = 100; //claw gripping state
+int holdDice = 120; //claw gripping state
 int releaseDice = 5; //claw open state
 
 //Other variables
@@ -60,6 +60,7 @@ void loop() {
 //      else if()
 //        pathRight();
         pathCentre();
+//  pathLeft();
         while(1);
 }                    
 
@@ -137,6 +138,8 @@ void turnRight(){
 
 void grab()
 {
+  lWSpeed += 30;
+  rWSpeed += 30;
   tilt.write(straightUp);
   Serial.println("HITING TO GRAB");
   setSpeed(lWSpeed, rWSpeed);
@@ -153,6 +156,8 @@ void grab()
   }
   Serial.println("GRABBING");
   delay(50);
+  lWSpeed -= 30;
+  rWSpeed -= 30;
   setSpeed(-lWSpeed, -rWSpeed);
   delay(200);
   analogWrite(rSpe, 0);
@@ -183,9 +188,12 @@ void grab()
 
 void release()
 {
+  lWSpeed += 40;
+  rWSpeed += 40;
   tilt.write(straightUp);
   setSpeed(lWSpeed, rWSpeed);
   while (digitalRead(bumper) == 1) {
+    
     if((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) < THRESHOLD)){      //Auto-calibration
         setSpeed(lWSpeed, (rWSpeed - adjSpeed));
         delay(100);
@@ -206,13 +214,15 @@ void release()
   grip.write(holdDice);
   delay(25);
   tilt.write(grabHeight);
-  delay(50);
+  delay(100);
   grip.write(0);
   delay(250);
   tilt.write(180);
   delay(250);
   attachServo(false);
   delay(100);
+  lWSpeed -= 30;
+  rWSpeed -= 30;
   setSpeed(-lWSpeed, -rWSpeed);
   delay(250);
   turnLeft();
@@ -259,7 +269,7 @@ void pathCentre() {
 
   lWSpeed += 5;
   rWSpeed += 5;
-  
+
   grab();
   release();
   
@@ -307,7 +317,7 @@ void pathLeft(){
 
   lWSpeed += 5;
   rWSpeed += 5;
-  
+
   //Third Object
   grab();
   release();
