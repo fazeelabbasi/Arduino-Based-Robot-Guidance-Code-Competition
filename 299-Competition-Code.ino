@@ -283,6 +283,7 @@ void attachServo(bool tf)
   }
 }
 
+<<<<<<< HEAD
 pathCentre() {
   lineFollowInt(3);                 //drive forwards 
   turnRight();
@@ -319,4 +320,41 @@ pathCentre() {
   turnLeft();
   release();
   while(true);
+=======
+void pathLeft(){
+  //First Object
+  lineFollowInt(5);
+  turnRight();
+  grab();
+  lineFollowInt(3);
+  turnLeft();
+  release();
+
+  //Second Object
+  lineFollowInt(1);
+  turnLeft();
+  grab();
+  lineFollowInt(1);
+  release();
+
+  //Third Object
+  grab();
+  release();
+
+  //Fourth Object
+  lineFollowInt(2);
+  turnRight();
+  grab();
+  lineFollowInt(3);
+  turnLeft();
+  release();
+
+  //Fifth Object
+  lineFollowInt(4);
+  turnRight();
+  grab();
+  lineFollowInt(3);
+  turnLeft();
+  release();
+>>>>>>> ea8106a39df60263d2636d06bc2ef2de5849eca3
 }
