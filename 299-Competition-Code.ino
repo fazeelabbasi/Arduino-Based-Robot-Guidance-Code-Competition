@@ -1,6 +1,8 @@
 #include <Servo.h>
 #include <QSerial.h>
 
+QSerial IR;
+
 //Robot pin declarations
 int rDir = 7;
 int lDir = 4;
@@ -9,8 +11,9 @@ int lSpe = 5;
 int adjSpeed = 60;
 int lWSpeed = 90 + 40;                             //set left wheel speed
 int rWSpeed = 96 + 40;                            //set right wheel speed
-int IR = 2;                                          //used for acquiring initial position
-int bumper = 2;                                      //both bumpers are wired to the same circuit
+int IRpin = 12;                                  //used for acquiring initial position
+int pos = 52;                                    //initial position 
+int bumper = 2;                                 //both bumpers are wired to the same circuit
 int leftSensor = A0;
 int rightSensor = A1;
 int centerSensor = A2;
@@ -36,6 +39,8 @@ int releaseDice = 5; //claw open state
 boolean clawState = false; //used to determine if claw should be closed or open
 
 void setup() { 
+  pinMode(IRpin, INPUT);
+  IR.attach(IRpin, -1);
   Serial.begin(9600);
 
   //set up claw
@@ -54,14 +59,22 @@ void setup() {
   waitButton();
 }
 
-void loop() {    
-//  if()pathLeft();
-//    else if()pathCentre();
-//      else if()
-        pathRight();
-//        pathCentre();
-        while(1);
-}                    
+void loop() { 
+  Serial.println(pos);
+  getPos(); 
+  if(pos == 48)pathLeft();
+  else if(pos == 49)pathCentre();
+  else if(pos == 50) pathRight();
+
+  while(1);
+}
+
+void getPos(){
+  while (!((pos ==48)||(pos==49)||(pos ==50))){
+  int pos = IR.receive(100);  
+  Serial.println(pos);
+    }
+  }
 
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
 
@@ -362,6 +375,17 @@ void pathRight(){
   lWSpeed += 5;
   rWSpeed += 5;
 
+   lineFollowInt(4);
+  turnRight();
+  grab();
+  lineFollowInt(1);
+  turnLeft();
+  release();
+
+  lWSpeed += 5;
+  rWSpeed += 5;
+  
+
   lineFollowInt(2);
   turnRight();
   grab();
@@ -369,13 +393,5 @@ void pathRight(){
    turnLeft();
   release();
 
-  lWSpeed += 5;
-  rWSpeed += 5;
-
-  lineFollowInt(4);
-  turnRight();
-  grab();
-  lineFollowInt(1);
-  turnLeft();
-  release();
+ 
   }
