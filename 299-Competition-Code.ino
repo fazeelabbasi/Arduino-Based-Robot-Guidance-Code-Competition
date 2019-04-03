@@ -50,13 +50,15 @@ void setup() {
   pinMode(rDir, OUTPUT); 
   pinMode(lDir, OUTPUT); 
   pinMode(rSpe, OUTPUT); 
-  pinMode(lSpe, OUTPUT);  
+  pinMode(lSpe, OUTPUT);
+  waitButton();
 }
 
 void loop() {    
-  if()pathLeft();
-    else if()pathCenter();
-      else if()pathRight();
+//  if()pathLeft();
+//    else if()pathCentre();
+//      else if()
+        pathRight();
 }                    
 
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
@@ -250,9 +252,14 @@ void attachServo(bool tf)
     pan.detach();
   }
 }
+void waitButton()
+{
+  while (digitalRead(bumper) == HIGH) {}
+  while (digitalRead(bumper) == LOW) {}
+  delay(500);
+}
 
-
-pathCentre() {
+void pathCentre() {
   lineFollowInt(3);                 //drive forwards 
   turnRight();
   grab();
