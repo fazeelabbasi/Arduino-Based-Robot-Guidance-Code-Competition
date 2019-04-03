@@ -312,9 +312,6 @@ void pathLeft(){
   grab();
   release();
 
-  lWSpeed += 5;
-  rWSpeed += 5;
-
   //Fourth Object
   lineFollowInt(2);
   turnLeft();
@@ -323,8 +320,8 @@ void pathLeft(){
   turnRight();
   release();
   
-  lWSpeed += 10;
-  rWSpeed += 10;
+  lWSpeed += 5;
+  rWSpeed += 5;
 
   //Fifth Object
   lineFollowInt(4);
@@ -357,9 +354,6 @@ void pathRight(){
   grab();
   release();
 
-  lWSpeed += 5;
-  rWSpeed += 5;
-
   lineFollowInt(2);
   turnRight();
   grab();
@@ -367,8 +361,8 @@ void pathRight(){
    turnLeft();
   release();
 
-  lWSpeed += 10;
-  rWSpeed += 10;
+  lWSpeed += 5;
+  rWSpeed += 5;
 
   lineFollowInt(4);
   turnRight();
