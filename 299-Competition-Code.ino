@@ -263,20 +263,18 @@ void pathCentre() {
   lineFollowInt(2);
   turnLeft();
   release();
-  
   lineFollowInt(3);                 //drive forwards 
   turnLeft();
   grab();
   lineFollowInt(2);
   turnRight();
   release();
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of e3c0110... all paths speed up
   grab();
   release();
-
-  lWSpeed += 5;
-  rWSpeed += 5;
-  
   lineFollowInt(5);                 //drive forwards 
   turnLeft();
   lineFollowInt(2);
@@ -287,10 +285,13 @@ void pathCentre() {
   lineFollowInt(2);
   turnRight();
   release();
+<<<<<<< HEAD
 
   lWSpeed += 5;
   rWSpeed += 5;
   
+=======
+>>>>>>> parent of e3c0110... all paths speed up
   lineFollowInt(5);                 //drive forwards 
   turnRight();
   lineFollowInt(2);
@@ -301,6 +302,7 @@ void pathCentre() {
   lineFollowInt(2);
   turnLeft();
   release();
+  while(true);
 }
 void pathLeft(){
   //First Object
@@ -326,6 +328,12 @@ void pathLeft(){
   grab();
   release();
 
+<<<<<<< HEAD
+=======
+  lWSpeed += 10;
+  rWSpeed += 10;
+
+>>>>>>> parent of e3c0110... all paths speed up
   //Fourth Object
   lineFollowInt(2);
   turnLeft();
@@ -362,12 +370,15 @@ void pathRight(){
   turnRight();
   release();
 
-  lWSpeed += 5;
-  rWSpeed += 5;
-
   grab();
   release();
 
+<<<<<<< HEAD
+=======
+  lWSpeed += 10;
+  rWSpeed += 10;
+
+>>>>>>> parent of e3c0110... all paths speed up
   lineFollowInt(2);
   turnRight();
   grab();
