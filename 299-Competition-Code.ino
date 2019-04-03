@@ -251,5 +251,36 @@ void attachServo(bool tf)
     pan.detach();
   }
 }
-pathRight(){
+void pathRight(){
+  
+  lineFollowInt(1);
+  turnRight();
+  grab();
+  lineFollowInt(1);
+  turnLeft();
+  release();
+
+  lineFollowInt(5);
+  turnLeft();
+  grab();
+  lineFollowInt(3);
+  turnRight();
+  release();
+
+  grab();
+  release();
+
+  lineFollowInt(2);
+  turnRight();
+  grab();
+  lineFollowInt(1);
+  turnLeft();
+  release();
+
+  lineFollowInt(4);
+  turnRight();
+  grab();
+  lineFollowInt(1);
+  turnLeft();
+  release();
   }
