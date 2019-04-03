@@ -28,7 +28,7 @@ int straightPan = 90; //angle of claw (facing forward)
 int straightUp = 180;
 
 //open 0 - 180 close
-int holdDice = 90; //claw gripping state
+int holdDice = 100; //claw gripping state
 int releaseDice = 5; //claw open state
 
 //Other variables
@@ -43,7 +43,7 @@ void setup() {
   tilt.attach(tiltPin);
   pan.attach(panPin);
   pan.write(90);
-  grip.write(90);
+  grip.write(0);
   tilt.write(straightUp);
 
   //set up motors
@@ -152,29 +152,27 @@ void grab()
     }
   }
   Serial.println("GRABBING");
-  delay(500);
+  delay(50);
   setSpeed(-lWSpeed, -rWSpeed);
-  delay(225);
+  delay(200);
   analogWrite(rSpe, 0);
   analogWrite(lSpe, 0);
-  delay(500);
+  delay(100);
   attachServo(true);
   tilt.write(straightUp);
   //delay(250);
    delay(25);
   pan.write(straightPan);
   delay(25);
-  //delay(250);
   grip.write(0);
-  delay(250);
   tilt.write(grabHeight);
-  delay(1500);
-  grip.write(90);
+  delay(1750);
+  grip.write(holdDice);
   delay(700);
   tilt.write(straightUp);
   delay(250);
   attachServo(false);
-  delay(500);
+  delay(100);
   setSpeed(-lWSpeed+10, -rWSpeed+10);
   while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)));
   setSpeed(40,40);
@@ -202,19 +200,19 @@ void release()
   }
   attachServo(true);
   tilt.write(180);
-  delay(250);
+  delay(25);
   pan.write(90);
-  delay(250);
-  grip.write(90);
-  delay(250);
+  delay(25);
+  grip.write(holdDice);
+  delay(25);
   tilt.write(grabHeight);
   delay(50);
   grip.write(0);
   delay(250);
   tilt.write(180);
   delay(250);
-   attachServo(false);
-  delay(1000);
+  attachServo(false);
+  delay(100);
   setSpeed(-lWSpeed, -rWSpeed);
   delay(250);
   turnLeft();
@@ -264,9 +262,6 @@ void pathCentre() {
   
   grab();
   release();
-
-  lWSpeed += 5;
-  rWSpeed += 5;
   
   lineFollowInt(5);                 //drive forwards 
   turnLeft();
@@ -279,8 +274,8 @@ void pathCentre() {
   turnRight();
   release();
 
-  lWSpeed += 10;
-  rWSpeed += 10;
+  lWSpeed += 5;
+  rWSpeed += 5;
   
   lineFollowInt(5);                 //drive forwards 
   turnRight();
