@@ -251,14 +251,23 @@ void pathCentre() {
   lineFollowInt(2);
   turnLeft();
   release();
+  
   lineFollowInt(3);                 //drive forwards 
   turnLeft();
   grab();
   lineFollowInt(2);
   turnRight();
   release();
+
+  lWSpeed += 5;
+  rWSpeed += 5;
+  
   grab();
   release();
+
+  lWSpeed += 5;
+  rWSpeed += 5;
+  
   lineFollowInt(5);                 //drive forwards 
   turnLeft();
   lineFollowInt(2);
@@ -269,6 +278,10 @@ void pathCentre() {
   lineFollowInt(2);
   turnRight();
   release();
+
+  lWSpeed += 10;
+  rWSpeed += 10;
+  
   lineFollowInt(5);                 //drive forwards 
   turnRight();
   lineFollowInt(2);
@@ -279,7 +292,6 @@ void pathCentre() {
   lineFollowInt(2);
   turnLeft();
   release();
-  while(true);
 }
 void pathLeft(){
   //First Object
@@ -305,8 +317,8 @@ void pathLeft(){
   grab();
   release();
 
-  lWSpeed += 10;
-  rWSpeed += 10;
+  lWSpeed += 5;
+  rWSpeed += 5;
 
   //Fourth Object
   lineFollowInt(2);
@@ -344,11 +356,14 @@ void pathRight(){
   turnRight();
   release();
 
+  lWSpeed += 5;
+  rWSpeed += 5;
+
   grab();
   release();
 
-  lWSpeed += 10;
-  rWSpeed += 10;
+  lWSpeed += 5;
+  rWSpeed += 5;
 
   lineFollowInt(2);
   turnRight();
