@@ -57,7 +57,6 @@ void loop() {
   if()pathLeft();
     else if()pathCenter();
       else if()pathRight();
- 
 }                    
 
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
@@ -251,9 +250,49 @@ void attachServo(bool tf)
     pan.detach();
   }
 }
-void pathRight(){
-  
+
+
+pathCentre() {
+  lineFollowInt(3);                 //drive forwards 
+  turnRight();
+  grab();
+  lineFollowInt(2);
+  turnLeft();
+  release();
+  lineFollowInt(3);                 //drive forwards 
+  turnLeft();
+  grab();
+  lineFollowInt(2);
+  turnRight();
+  release();
+  grab();
+  release();
+  lineFollowInt(5);                 //drive forwards 
+  turnLeft();
+  lineFollowInt(2);
+  turnRight();
+  grab();
   lineFollowInt(1);
+  turnLeft();
+  lineFollowInt(2);
+  turnRight();
+  release();
+  lineFollowInt(5);                 //drive forwards 
+  turnRight();
+  lineFollowInt(2);
+  turnLeft();
+  grab();
+  lineFollowInt(1);
+  turnRight();
+  lineFollowInt(2);
+  turnLeft();
+  release();
+  while(true);
+}
+void pathLeft(){
+  //First Object
+  lineFollowInt(5);
+
   turnRight();
   grab();
   lineFollowInt(1);
@@ -283,4 +322,4 @@ void pathRight(){
   lineFollowInt(1);
   turnLeft();
   release();
-  }
+}
