@@ -17,8 +17,8 @@ int bumper = 2;                                 //both bumpers are wired to the 
 int leftSensor = A0;
 int rightSensor = A1;
 int centerSensor = A2;
-int const THRESHOLD = 550;                           //threshold for light sensors
-int const turnDelay = 1200-600;                          //time for half turn
+int const THRESHOLD = 570;                           //threshold for light sensors
+int const turnDelay = 700;                          //time for half turn
 int const speedChangeDelay = 200;
 
 Servo grip, tilt, pan;
@@ -31,8 +31,8 @@ int straightPan = 90; //angle of claw (facing forward)
 int straightUp = 180;
 
 //open 0 - 180 close
-int holdDice = 90; //claw gripping state
-int releaseDice = 5; //claw open state
+int holdDice = 180; //claw gripping state
+int releaseDice = 0; //claw open state
 
 //Other variables
 
@@ -60,21 +60,31 @@ void setup() {
 }
 
 void loop() { 
-  Serial.println(pos);
-  getPos(); 
-  if(pos == 48)pathLeft();
-  else if(pos == 49)pathCentre();
-  else if(pos == 50) pathRight();
+  
+  int val = IR.receive(100);
+  //Serial.println(val);
+  //delay(100);
+  if (char(val) == '0' || char(val) == '1' || char(val) == '2') {
+    if (char(val) == '0') {
+      Serial.println("path1");
+      pathLeft();
+    }
+    else if (char(val) == '1') {
+       Serial.println("path2");
+      pathCentre();
 
-  while(1);
-}
+    }
+    else if (char(val) == '2') {
+       Serial.println("path3");
+      pathRight();
 
-void getPos(){
-  while (!((pos ==48)||(pos==49)||(pos ==50))){
-  int pos = IR.receive(100);  
-  Serial.println(pos);
     }
   }
+  //Serial.println(pos);
+ 
+}
+
+
 
 //LOGIC FUNCTIONS TO EXECUTE DIRECTIONS
 
@@ -167,7 +177,7 @@ void grab()
   Serial.println("GRABBING");
   delay(500);
   setSpeed(-lWSpeed, -rWSpeed);
-  delay(225);
+  delay(212);
   analogWrite(rSpe, 0);
   analogWrite(lSpe, 0);
   delay(500);
@@ -181,8 +191,8 @@ void grab()
   grip.write(0);
   delay(250);
   tilt.write(grabHeight);
-  delay(1500);
-  grip.write(90);
+  delay(2000);
+  grip.write(holdDice);
   delay(700);
   tilt.write(straightUp);
   delay(250);
@@ -192,7 +202,7 @@ void grab()
   while(!((analogRead(rightSensor) > THRESHOLD) && (analogRead(leftSensor) > THRESHOLD)));
   setSpeed(40,40);
   turnLeft();
-  delay(150);
+  delay(250);
 }
 
 
@@ -218,7 +228,7 @@ void release()
   delay(250);
   pan.write(90);
   delay(250);
-  grip.write(90);
+  grip.write(holdDice);
   delay(250);
   tilt.write(grabHeight);
   delay(50);
@@ -245,7 +255,6 @@ void attachServo(bool tf)
   }
   else
   {
-    grip.detach();
     tilt.detach();
     pan.detach();
   }
